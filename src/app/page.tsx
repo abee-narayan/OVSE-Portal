@@ -60,10 +60,10 @@ export default function Home() {
             Login
           </Link>
           <div className="flex items-center gap-10">
-            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
+            <Link href="/about" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
               What is OVSE
             </Link>
-            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
+            <Link href="/partners" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
               OVSE Partners
             </Link>
             <div className="relative group">
@@ -76,7 +76,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
+            <Link href="/compliance" className="text-sm font-bold text-slate-500 hover:text-[#1D2660] transition-colors">
               Compliance
             </Link>
           </div>
