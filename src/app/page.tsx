@@ -83,10 +83,16 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* 4. Hero Section */}
-      <main className="flex-1 relative overflow-hidden bg-gradient-to-br from-[#E4F2E4] via-[#FEFDF7] to-[#FFF7ED]">
-        {/* Decorative Circle Pattern */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-[#1D2660]/5 pointer-events-none" />
+      {/* 4. Hero Section - Using Provided Assets */}
+      <main className="flex-1 relative overflow-hidden bg-white">
+        {/* Official Branded Background */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/hero-bg.png"
+            alt="Branded Background"
+            className="w-full h-full object-cover object-center opacity-80"
+          />
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-24 py-24 grid md:grid-cols-2 items-center gap-16 relative z-10">
           <div className="space-y-10 animate-in fade-in slide-in-from-left duration-1000">
@@ -101,7 +107,7 @@ export default function Home() {
 
             <div className="pt-2">
               <Link href="/register">
-                <Button className="bg-[#2D3169] hover:bg-[#1D2660] text-white px-12 py-9 text-2xl font-black rounded-3xl shadow-3xl shadow-blue-900/40 transition-all hover:-translate-y-1 active:scale-95">
+                <Button className="bg-[#2D3169] hover:bg-[#1D2660] text-white px-12 py-9 text-2xl font-black rounded-3xl shadow-[0_20px_50px_-10px_rgba(45,49,105,0.4)] transition-all hover:-translate-y-1 active:scale-95">
                   OVSE Login
                 </Button>
               </Link>
@@ -109,50 +115,17 @@ export default function Home() {
           </div>
 
           <div className="relative animate-in fade-in zoom-in duration-1000">
-            <div className="relative">
-              {/* Monitor Mockup */}
-              <div className="bg-white rounded-2xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)] p-4 border-[12px] border-slate-900 overflow-hidden aspect-[16/10] flex flex-col items-center justify-center space-y-6 relative group">
-                <div className="text-center space-y-3 relative z-10">
-                  <h3 className="text-3xl font-black text-slate-800 tracking-tight">Verify using <span className="text-[#1D2660] italic">Aadhaar</span></h3>
-                  <p className="text-sm font-semibold text-slate-500">Quick verification, done in less than a minute.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-2xl border-2 border-slate-50 relative z-10">
-                  <div className="grid grid-cols-5 gap-1.5 w-32 h-32 opacity-80">
-                    {Array.from({ length: 25 }).map((_, i) => (
-                      <div key={i} className={`h-full w-full rounded-[1px] ${Math.random() > 0.4 ? 'bg-slate-900' : 'bg-transparent'}`} />
-                    ))}
-                  </div>
-                </div>
-
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest relative z-10">Scan this QR using Aadhaar App in your phone</p>
-
-                {/* Subtle Background Pattern in Monitor */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#F8FAFC_100%)] opacity-50" />
-              </div>
-
-              {/* Mascot Image Mockup */}
-              <div className="absolute -bottom-20 -right-16 md:-bottom-24 md:-right-24 h-72 md:h-96 w-auto animate-float">
-                <div className="relative h-full flex items-end">
-                  <div className="h-[90%] aspect-[3/4] bg-white rounded-[40px] shadow-2xl border-4 border-white overflow-hidden relative group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-red-500 to-red-600" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white space-y-4">
-                      <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
-                        <Monitor className="h-10 w-10 text-orange-500" />
-                      </div>
-                      <h4 className="font-black text-xs uppercase tracking-widest leading-tight">Secure<br />Aadhaar<br />Offline</h4>
-                      <div className="w-full h-1 bg-white/20 rounded-full" />
-                    </div>
-                    {/* Shimmer Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  </div>
-                  {/* Character Smartphone Support */}
-                  <div className="absolute -left-16 bottom-12 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-orange-600 border-2 border-orange-50 animate-pulse">
-                    <Smartphone className="h-6 w-6" />
-                  </div>
-                </div>
-              </div>
+            {/* High-Fidelity Hero Illustration */}
+            <div className="relative z-10 drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)] transform hover:scale-[1.02] transition-transform duration-500">
+              <img
+                src="/hero-mascot.png"
+                alt="Aadhaar Verification Mascot and Monitor"
+                className="w-full h-auto max-w-[650px] mx-auto"
+              />
             </div>
+
+            {/* Subtle glow behind illustration */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-orange-100/20 blur-[100px] rounded-full -z-10" />
           </div>
         </div>
       </main>
