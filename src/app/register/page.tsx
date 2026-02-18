@@ -67,7 +67,7 @@ export default function RegisterPage() {
                 <Link href="/" className="text-xs font-bold text-blue-900 hover:underline">Back to Home</Link>
             </header>
 
-            <main className="max-w-4xl mx-auto py-12 px-6">
+            <main className="max-w-4xl mx-auto py-12 px-6 font-sans">
                 {/* Progress Stepper */}
                 <div className="flex justify-between items-center mb-12 relative">
                     <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 z-0" />
@@ -223,46 +223,76 @@ export default function RegisterPage() {
                             )}
 
                             {step === 5 && (
-                                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                                    <div className="bg-slate-50 p-8 rounded-3xl space-y-6">
-                                        <div className="grid md:grid-cols-2 gap-8">
-                                            <ReviewItem label="Organization" value={formData.orgName} />
-                                            <ReviewItem label="Reg Number" value={formData.regNumber} />
-                                            <ReviewItem label="Signatory" value={formData.signatoryName} />
-                                            <ReviewItem label="MPOC" value={formData.mpocName} />
-                                            <ReviewItem label="TPOC" value={formData.tpocName} />
-                                            <ReviewItem label="Email" value={formData.email} />
-                                        </div>
-                                        <div className="pt-6 border-t border-slate-200">
-                                            <ReviewItem label="Headquarters" value={formData.orgAddress} />
+                                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 text-slate-800">
+                                    <div className="bg-slate-50/80 p-10 rounded-[40px] border border-slate-100 shadow-sm relative overflow-hidden group">
+                                        {/* Decorative Background Icon */}
+                                        <Building2 className="absolute -right-4 -bottom-4 h-48 w-48 text-slate-200/50 rotate-12 pointer-events-none group-hover:scale-110 transition-transform duration-700" />
+
+                                        <div className="relative z-10 grid md:grid-cols-2 gap-y-10 gap-x-12">
+                                            <div className="space-y-6">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <Building2 className="h-4 w-4 text-[#1D2660]" />
+                                                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1D2660]">Organization</h4>
+                                                </div>
+                                                <ReviewItem label="Legal Name" value={formData.orgName} />
+                                                <ReviewItem label="Reg Number" value={formData.regNumber} />
+                                                <ReviewItem label="Address" value={formData.orgAddress} />
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <Users className="h-4 w-4 text-[#1D2660]" />
+                                                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1D2660]">Stakeholders</h4>
+                                                </div>
+                                                <ReviewItem label="Signatory" value={formData.signatoryName} />
+                                                <ReviewItem label="MPOC" value={formData.mpocName} />
+                                                <ReviewItem label="TPOC" value={formData.tpocName} />
+                                            </div>
+
+                                            <div className="col-span-full pt-8 border-t border-slate-200/60">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <Mail className="h-4 w-4 text-[#1D2660]" />
+                                                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1D2660]">Contact Access</h4>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <ReviewItem label="Email" value={formData.email} />
+                                                    <ReviewItem label="Mobile" value={formData.mobile} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100 flex items-center gap-4">
-                                        <ShieldCheck className="h-6 w-6 text-amber-600 shrink-0" />
-                                        <p className="text-xs text-amber-800 leading-relaxed font-medium">
-                                            By submitting this application, you confirm that all information provided is accurate and all uploaded documents are authentic. This submission will trigger a tiered admin review process.
-                                        </p>
+
+                                    <div className="p-8 bg-amber-50/50 rounded-[32px] border border-amber-100/50 flex items-start gap-5 shadow-sm">
+                                        <div className="h-10 w-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 shrink-0">
+                                            <ShieldCheck className="h-6 w-6" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h5 className="font-black text-xs uppercase tracking-widest text-amber-900">Final Declaration</h5>
+                                            <p className="text-xs text-amber-800/80 leading-relaxed font-medium">
+                                                By clicking "Submit", you solemnly declare that provided information is true. Any discrepancy may lead to immediate rejection of the OVSE registration.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="flex justify-between items-center pt-8 border-t border-slate-50">
+                            <div className="flex justify-between items-center pt-8 border-t border-slate-100">
                                 <Button
                                     variant="ghost"
                                     onClick={prevStep}
                                     disabled={step === 1 || submitted}
-                                    className="gap-2 font-bold text-slate-400"
+                                    className="gap-2 font-bold text-slate-400 hover:text-[#1D2660] h-12 rounded-xl"
                                 >
                                     <ChevronLeft className="h-4 w-4" /> Previous
                                 </Button>
                                 {submitted ? (
-                                    <div className="flex items-center gap-2 text-emerald-600 font-bold uppercase tracking-widest text-xs">
+                                    <div className="flex items-center gap-2 text-emerald-600 font-black uppercase tracking-[0.1em] text-[10px]">
                                         <CheckCircle2 className="h-5 w-5" /> Submitted Successfully
                                     </div>
                                 ) : (
                                     <Button
                                         onClick={step === 5 ? handleSubmit : nextStep}
-                                        className="bg-[#1D2660] hover:bg-[#151B45] text-white px-8 py-6 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 shadow-xl shadow-blue-900/10"
+                                        className="bg-[#1D2660] hover:bg-[#151B45] text-white px-10 py-7 rounded-2xl font-black uppercase tracking-widest text-xs gap-3 shadow-2xl shadow-blue-900/20 active:scale-95 transition-all"
                                     >
                                         {step === 5 ? "Submit Application" : "Continue to Next Step"} <ChevronRight className="h-4 w-4" />
                                     </Button>
