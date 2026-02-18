@@ -61,11 +61,29 @@ export default function Home() {
             Login
           </Link>
           <div className="flex items-center gap-8 ml-8">
-            {["What is OVSE", "Expression of Interest", "OVSE Partners", "Compliance"].map((item) => (
-              <Link key={item} href="#" className="text-sm font-bold text-slate-500 hover:text-blue-900 transition-colors uppercase tracking-tight">
-                {item}
-              </Link>
-            ))}
+            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-blue-900 transition-colors uppercase tracking-tight">
+              What is OVSE
+            </Link>
+            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-blue-900 transition-colors uppercase tracking-tight">
+              OVSE Partners
+            </Link>
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-sm font-bold text-slate-500 group-hover:text-blue-900 transition-colors uppercase tracking-tight">
+                Contact Us
+                <ChevronDown className="h-3 w-3" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-slate-100 shadow-xl rounded-lg hidden group-hover:block animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                <Link href="#" className="block px-4 py-3 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-[#1D2660] transition-colors border-b border-slate-50">
+                  Expression of Interest
+                </Link>
+                <Link href="#" className="block px-4 py-3 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-[#1D2660] transition-colors">
+                  Support Desk
+                </Link>
+              </div>
+            </div>
+            <Link href="#" className="text-sm font-bold text-slate-500 hover:text-blue-900 transition-colors uppercase tracking-tight">
+              Compliance
+            </Link>
           </div>
         </div>
       </nav>
