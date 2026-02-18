@@ -61,7 +61,7 @@ export default function Home() {
             Login
           </Link>
           <div className="flex items-center gap-8 ml-8">
-            {["What is OVSE", "OVSE Partners", "Placeholder", "Placeholder"].map((item) => (
+            {["What is OVSE", "Expression of Interest", "OVSE Partners", "Compliance"].map((item) => (
               <Link key={item} href="#" className="text-sm font-bold text-slate-500 hover:text-blue-900 transition-colors uppercase tracking-tight">
                 {item}
               </Link>
@@ -87,10 +87,15 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 flex flex-wrap gap-4">
               <Link href="/register">
                 <Button className="bg-[#1D2660] hover:bg-[#151B45] text-white px-10 py-8 text-xl font-bold rounded-2xl shadow-2xl shadow-blue-900/20 transition-all hover:-translate-y-1 active:scale-95">
                   OVSE Login
+                </Button>
+              </Link>
+              <Link href="#">
+                <Button variant="outline" className="border-2 border-[#1D2660] text-[#1D2660] hover:bg-blue-50 px-10 py-8 text-xl font-bold rounded-2xl transition-all hover:-translate-y-1 active:scale-95">
+                  Expression of Interest
                 </Button>
               </Link>
             </div>
