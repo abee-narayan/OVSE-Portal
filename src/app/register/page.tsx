@@ -19,8 +19,12 @@ import {
     Users,
     FileUp,
     Send,
-    ShieldCheck
+    ShieldCheck,
+    CreditCard,
+    Hash,
+    FileCode
 } from "lucide-react";
+import { validatePAN, validateGSTIN, validateCIN } from "../../../alogorithm to check/validators";
 
 // Registration Schema
 const registrationSchema = z.object({
@@ -29,6 +33,9 @@ const registrationSchema = z.object({
     orgName: z.string().min(3, "Legal entity name is required"),
     orgAddress: z.string().min(10, "Full headquarters address is required"),
     regNumber: z.string().min(5, "Valid registration number (CIN/LLPIN) required"),
+    panNumber: z.string().refine(val => validatePAN(val), "Invalid PAN Number format (e.g. ABCDE1234F)"),
+    gstinNumber: z.string().refine(val => validateGSTIN(val), "Invalid GSTIN format (e.g. 29ABCDE1234F1Z5)"),
+    cinNumber: z.string().refine(val => validateCIN(val), "Invalid CIN format (e.g. L12345KA2020PLC123456)"),
     signatoryName: z.string().min(3, "Authorized signatory name is required"),
     mpocName: z.string().min(3, "Management POC name is required"),
     tpocName: z.string().min(3, "Technical POC name is required")
@@ -38,7 +45,7 @@ type RegistrationFormData = z.infer<typeof registrationSchema>;
 
 const STEPS = [
     { id: 1, title: "Identity", icon: Users, fields: ["email", "mobile"] },
-    { id: 2, title: "Organization", icon: Building2, fields: ["orgName", "regNumber", "orgAddress"] },
+    { id: 2, title: "Organization", icon: Building2, fields: ["orgName", "regNumber", "orgAddress", "panNumber", "gstinNumber", "cinNumber"] },
     { id: 3, title: "Contacts", icon: ShieldCheck, fields: ["signatoryName", "mpocName", "tpocName"] },
     { id: 4, title: "Documents", icon: FileUp, fields: [] },
     { id: 5, title: "Review", icon: CheckCircle2, fields: [] }
@@ -63,6 +70,9 @@ export default function RegisterPage() {
             orgName: "",
             orgAddress: "",
             regNumber: "",
+            panNumber: "",
+            gstinNumber: "",
+            cinNumber: "",
             signatoryName: "",
             mpocName: "",
             tpocName: ""
@@ -207,6 +217,48 @@ export default function RegisterPage() {
                                                 className={`py-7 rounded-2xl bg-slate-50/50 focus:bg-white transition-all ${errors.orgAddress ? 'border-red-200' : ''}`}
                                             />
                                         </div>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center px-1">
+                                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">PAN Number</Label>
+                                                {errors.panNumber && <span className="text-[9px] font-black text-red-500 uppercase">{errors.panNumber.message}</span>}
+                                            </div>
+                                            <div className="relative group">
+                                                <CreditCard className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-[#1D2660] transition-colors" />
+                                                <Input
+                                                    {...register("panNumber")}
+                                                    placeholder="ABCDE1234F"
+                                                    className={`pl-14 py-7 rounded-2xl bg-slate-50/50 focus:bg-white transition-all ${errors.panNumber ? 'border-red-200' : ''}`}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center px-1">
+                                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">GSTIN Number</Label>
+                                                {errors.gstinNumber && <span className="text-[9px] font-black text-red-500 uppercase">{errors.gstinNumber.message}</span>}
+                                            </div>
+                                            <div className="relative group">
+                                                <Hash className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-[#1D2660] transition-colors" />
+                                                <Input
+                                                    {...register("gstinNumber")}
+                                                    placeholder="29ABCDE1234F1Z5"
+                                                    className={`pl-14 py-7 rounded-2xl bg-slate-50/50 focus:bg-white transition-all ${errors.gstinNumber ? 'border-red-200' : ''}`}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-span-2 space-y-4">
+                                            <div className="flex justify-between items-center px-1">
+                                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">CIN Number</Label>
+                                                {errors.cinNumber && <span className="text-[9px] font-black text-red-500 uppercase">{errors.cinNumber.message}</span>}
+                                            </div>
+                                            <div className="relative group">
+                                                <FileCode className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-[#1D2660] transition-colors" />
+                                                <Input
+                                                    {...register("cinNumber")}
+                                                    placeholder="L12345KA2020PLC123456"
+                                                    className={`pl-14 py-7 rounded-2xl bg-slate-50/50 focus:bg-white transition-all ${errors.cinNumber ? 'border-red-200' : ''}`}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -293,6 +345,9 @@ export default function RegisterPage() {
                                                 <div className="space-y-6">
                                                     <ReviewItem label="Legal Entity" value={formData.orgName} />
                                                     <ReviewItem label="Reg ID" value={formData.regNumber} />
+                                                    <ReviewItem label="PAN" value={formData.panNumber} />
+                                                    <ReviewItem label="GSTIN" value={formData.gstinNumber} />
+                                                    <ReviewItem label="CIN" value={formData.cinNumber} />
                                                     <ReviewItem label="HQ Address" value={formData.orgAddress} />
                                                 </div>
                                             </div>
