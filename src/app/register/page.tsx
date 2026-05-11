@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,9 @@ import {
     ShieldCheck,
     CreditCard,
     Hash,
-    FileCode
+    FileCode,
+    Plus,
+    Trash2
 } from "lucide-react";
 import { validatePAN, validateGSTIN, validateCIN } from "../../../alogorithm to check/validators";
 
@@ -38,7 +40,9 @@ const registrationSchema = z.object({
     cinNumber: z.string().refine(val => validateCIN(val), "Invalid CIN format (e.g. L12345KA2020PLC123456)"),
     signatoryName: z.string().min(3, "Authorized signatory name is required"),
     mpocName: z.string().min(3, "Management POC name is required"),
-    tpocName: z.string().min(3, "Technical POC name is required")
+    tpocs: z.array(z.object({ name: z.string().min(3, "Technical POC name is required") }))
+        .min(1, "At least one TPOC is required")
+        .max(3, "Maximum 3 TPOCs allowed")
 });
 
 type RegistrationFormData = z.infer<typeof registrationSchema>;
@@ -46,7 +50,7 @@ type RegistrationFormData = z.infer<typeof registrationSchema>;
 const STEPS = [
     { id: 1, title: "Identity", icon: Users, fields: ["email", "mobile"] },
     { id: 2, title: "Organization", icon: Building2, fields: ["orgName", "regNumber", "orgAddress", "panNumber", "gstinNumber", "cinNumber"] },
-    { id: 3, title: "Contacts", icon: ShieldCheck, fields: ["signatoryName", "mpocName", "tpocName"] },
+    { id: 3, title: "Contacts", icon: ShieldCheck, fields: ["signatoryName", "mpocName", "tpocs"] },
     { id: 4, title: "Documents", icon: FileUp, fields: [] },
     { id: 5, title: "Review", icon: CheckCircle2, fields: [] }
 ];
@@ -59,6 +63,7 @@ export default function RegisterPage() {
         register,
         handleSubmit,
         trigger,
+        control,
         formState: { errors },
         getValues
     } = useForm<RegistrationFormData>({
@@ -75,8 +80,13 @@ export default function RegisterPage() {
             cinNumber: "",
             signatoryName: "",
             mpocName: "",
-            tpocName: ""
+            tpocs: [{ name: "" }]
         }
+    });
+
+    const { fields: tpocFields, append: appendTpoc, remove: removeTpoc } = useFieldArray({
+        control,
+        name: "tpocs"
     });
 
     const nextStep = async () => {
@@ -281,9 +291,9 @@ export default function RegisterPage() {
                                             />
                                         </div>
                                         <div className="grid md:grid-cols-2 gap-8">
-                                            <div className="p-10 bg-slate-50/50 rounded-[40px] space-y-5 border border-slate-100/50">
+                                            <div className="p-10 bg-slate-50/50 rounded-[40px] space-y-5 border border-slate-100/50 h-fit">
                                                 <div className="flex justify-between items-center px-1">
-                                                    <Label className="text-[10px] font-black uppercase tracking-widest text-[#1D2660]">Management POC</Label>
+                                                    <Label className="text-[10px] font-black uppercase tracking-widest text-[#1D2660]">Management POC (MPOC)</Label>
                                                     {errors.mpocName && <span className="text-[9px] font-black text-red-500 uppercase">{errors.mpocName.message}</span>}
                                                 </div>
                                                 <Input
@@ -291,17 +301,46 @@ export default function RegisterPage() {
                                                     placeholder="MPOC Full Name"
                                                     className={`py-6 bg-white rounded-2xl transition-all shadow-sm ${errors.mpocName ? 'border-red-200' : ''}`}
                                                 />
+                                                <p className="text-xs text-slate-500 mt-2 px-1">MPOC possesses full administrative rights for this application.</p>
                                             </div>
-                                            <div className="p-10 bg-slate-50/50 rounded-[40px] space-y-5 border border-slate-100/50">
-                                                <div className="flex justify-between items-center px-1">
-                                                    <Label className="text-[10px] font-black uppercase tracking-widest text-[#1D2660]">Technical POC</Label>
-                                                    {errors.tpocName && <span className="text-[9px] font-black text-red-500 uppercase">{errors.tpocName.message}</span>}
-                                                </div>
-                                                <Input
-                                                    {...register("tpocName")}
-                                                    placeholder="TPOC Full Name"
-                                                    className={`py-6 bg-white rounded-2xl transition-all shadow-sm ${errors.tpocName ? 'border-red-200' : ''}`}
-                                                />
+                                            <div className="space-y-4">
+                                                {tpocFields.map((field, index) => (
+                                                    <div key={field.id} className="p-8 bg-slate-50/50 rounded-[30px] space-y-4 border border-slate-100/50 relative group">
+                                                        <div className="flex justify-between items-center px-1">
+                                                            <Label className="text-[10px] font-black uppercase tracking-widest text-[#1D2660]">
+                                                                Technical POC (TPOC) {index + 1}
+                                                            </Label>
+                                                            {errors.tpocs?.[index]?.name && <span className="text-[9px] font-black text-red-500 uppercase">{errors.tpocs[index].name.message}</span>}
+                                                        </div>
+                                                        <div className="flex gap-3">
+                                                            <Input
+                                                                {...register(`tpocs.${index}.name`)}
+                                                                placeholder="TPOC Full Name"
+                                                                className={`py-6 bg-white rounded-2xl transition-all shadow-sm ${errors.tpocs?.[index]?.name ? 'border-red-200' : ''}`}
+                                                            />
+                                                            {tpocFields.length > 1 && (
+                                                                <Button 
+                                                                    type="button" 
+                                                                    variant="ghost" 
+                                                                    onClick={() => removeTpoc(index)}
+                                                                    className="h-auto px-4 rounded-2xl text-red-400 hover:text-red-600 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"
+                                                                >
+                                                                    <Trash2 className="h-5 w-5" />
+                                                                </Button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                {tpocFields.length < 3 && (
+                                                    <Button 
+                                                        type="button" 
+                                                        variant="outline" 
+                                                        onClick={() => appendTpoc({ name: "" })}
+                                                        className="w-full py-8 border-dashed border-2 border-slate-200 text-slate-500 hover:text-[#1D2660] hover:border-[#1D2660]/30 hover:bg-blue-50/20 rounded-[30px] font-black uppercase tracking-widest text-[10px] transition-all"
+                                                    >
+                                                        <Plus className="h-4 w-4 mr-2" /> Add Additional TPOC
+                                                    </Button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -359,8 +398,10 @@ export default function RegisterPage() {
                                                 </div>
                                                 <div className="space-y-6">
                                                     <ReviewItem label="Signatory" value={formData.signatoryName} />
-                                                    <ReviewItem label="Management" value={formData.mpocName} />
-                                                    <ReviewItem label="Technical" value={formData.tpocName} />
+                                                    <ReviewItem label="Management (MPOC)" value={formData.mpocName} />
+                                                    {formData.tpocs.map((tpoc, idx) => (
+                                                        <ReviewItem key={idx} label={`Technical (TPOC ${idx + 1})`} value={tpoc.name} />
+                                                    ))}
                                                 </div>
                                             </div>
 
